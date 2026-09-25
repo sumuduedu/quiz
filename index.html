@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>K72S004BM01 – Communication Skills for Workplace MCQ</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#eef1f4;color:#17202a;font-family:Arial,Helvetica,sans-serif}
+.app{max-width:1100px;margin:20px auto;background:#fff;border:1px solid #ddd;border-radius:10px;overflow:hidden;box-shadow:0 4px 18px rgba(0,0,0,.08)}
+.header{padding:22px;text-align:center;border-bottom:1px solid #ddd}
+.header h1{margin:0 0 6px;font-size:24px} .header p{margin:3px;font-size:13px}
+.meta{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:12px;padding:18px 20px;background:#fafafa}
+.meta label{font-size:12px;font-weight:bold} .meta input{display:block;width:100%;margin-top:5px;padding:9px;border:1px solid #bbb;border-radius:5px}
+.instructions{padding:12px 20px;font-size:13px}
+.start-area{padding:20px;text-align:center;border-top:1px solid #ddd}
+button{border:0;border-radius:5px;padding:10px 16px;background:#222;color:#fff;cursor:pointer;font-weight:bold}
+button:disabled{opacity:.45;cursor:not-allowed}
+button.secondary{background:#eee;color:#222;border:1px solid #bbb}
+.quiz-top{display:flex;align-items:center;gap:12px;padding:12px 20px;border-top:1px solid #ddd;border-bottom:1px solid #ddd;position:sticky;top:0;background:#fff;z-index:5}
+.timer{margin-left:auto;font-weight:bold}
+.progress{height:7px;background:#e5e5e5} .progress-bar{height:100%;width:0;background:#222;transition:width .2s}
+.questions{padding:15px 20px}
+.question{border:1px solid #ddd;border-radius:7px;padding:13px;margin-bottom:12px}
+.question h3{font-size:14px;margin:0 0 8px} .lesson{font-size:11px;color:#666;font-weight:normal}
+.option{display:block;padding:7px;border-radius:4px;cursor:pointer;font-size:13px} .option:hover{background:#f4f4f4}
+.option input{margin-right:7px}
+.quiz-pagination{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:5px 20px 18px}
+.page-indicator{font-weight:bold;text-align:center}
+.submit-area{padding:15px 20px;border-top:1px solid #ddd;text-align:center}
+.result{display:none;margin:20px;padding:18px;border:2px solid #222;border-radius:8px}
+.result h2{margin-top:0}
+.review-item{padding:8px 0;border-bottom:1px solid #ddd;font-size:12px}
+.review-page{margin-bottom:18px}
+.review-page h4{margin:10px 0 5px}
+.correct{font-weight:bold} .incorrect{font-weight:bold}
+.footer{padding:12px 20px;font-size:11px;border-top:1px solid #ddd;display:flex;justify-content:space-between}
+@media(max-width:700px){.meta{grid-template-columns:1fr}.header h1{font-size:19px}}
+@media print{
+  body{background:#fff}
+  .app{margin:0;border:0;box-shadow:none;max-width:none}
+  .no-print{display:none!important}
+  #detailsScreen{display:none!important}
+  #quizScreen{display:none!important}
+  .result{display:block;border:0;margin:0}
+  .review-page{break-inside:avoid;page-break-after:always;break-after:page}
+  .review-page:last-child{page-break-after:auto;break-after:auto}
+}
+</style>
+</head>
+<body>
+<div class="app">
+<header class="header">
+<h1>K72S004BM01 – Communication Skills for Workplace</h1>
+<p><b>MCQ Assessment</b></p>
+<p>K72S004BU01 – Practice Workplace Communication and Interpersonal Relations</p>
+</header>
+
+<!-- FIRST PAGE: STUDENT DETAILS ONLY -->
+<section id="detailsScreen">
+  <section class="meta">
+    <label>Student Name<input id="studentName" type="text" placeholder="Enter student name"></label>
+    <label>Student ID<input id="studentId" type="text" placeholder="Student ID"></label>
+    <label>Date<input id="examDate" type="date"></label>
+    <label>Time<input id="examTime" type="time"></label>
+  </section>
+  <div class="instructions">
+    <b>Assessment Instructions:</b>
+    Answer all 50 questions. Select one best answer. Each question carries 1 mark.
+    Time allowed: 60 minutes. Pass mark: 50%.
+  </div>
+  <div class="start-area">
+    <button type="button" id="startQuizBtn">Start Quiz</button>
+  </div>
+</section>
+
+<!-- QUIZ SCREEN -->
+<section id="quizScreen" style="display:none">
+  <div class="quiz-top no-print">
+    <span id="pageText"><b>Questions 1–5 of 50</b></span>
+    <span class="timer">Time: <span id="timer">60:00</span></span>
+  </div>
+  <div class="progress no-print"><div id="progressBar" class="progress-bar"></div></div>
+  <section id="questions" class="questions"></section>
+
+  <div class="quiz-pagination no-print">
+    <button type="button" id="prevBtn" class="secondary">Previous 5</button>
+    <span id="pageIndicator" class="page-indicator">1 / 10</span>
+    <button type="button" id="nextBtn">Next 5</button>
+  </div>
+
+  <div class="submit-area no-print">
+    <button type="button" id="submitBtn" style="display:none">Submit Quiz</button>
+  </div>
+</section>
+
+<!-- RESULT SCREEN -->
+<section id="result" class="result"></section>
+
+<footer class="footer"><span>MIT Computer Training Center</span><span>K72S004BM01</span><span>50 Marks</span></footer>
+</div>
+
+<script>
+const QUESTIONS=[["What is the main purpose of workplace communication?", "To avoid teamwork", "To share ideas and information effectively", "To reduce work", "To replace workplace procedures", "LP01"], ["Which sequence represents the basic communication process?", "Receiver → Sender → Feedback → Message", "Sender → Message → Medium → Receiver → Feedback", "Message → Receiver → Sender → Medium", "Medium → Sender → Receiver → Message", "LP01"], ["Which is an example of written workplace communication?", "Facial expression", "Telephone conversation", "Workplace memo", "Hand gesture", "LP01"], ["What is active listening?", "Hearing sounds without attention", "Waiting silently without understanding", "Paying attention and trying to understand the speaker", "Interrupting the speaker", "LP02"], ["If a supervisor gives an unclear instruction, what should you do?", "Guess what to do", "Ignore the instruction", "Ask for clarification", "Ask another customer", "LP02"], ["Which can be a barrier to effective listening?", "Good concentration", "Clarification", "Noise and distraction", "Eye contact", "LP02"], ["What is important when speaking to a customer?", "Use difficult technical words", "Speak clearly and politely", "Interrupt the customer", "Speak as quickly as possible", "LP03"], ["How should a technical problem be explained to a customer?", "Use unexplained jargon", "Explain clearly using appropriate language", "Avoid giving information", "Blame another employee", "LP03"], ["Which is a useful question when investigating a technical problem?", "Why did you do this?", "Do you understand computers?", "When did the problem first occur?", "Can you fix it yourself?", "LP03"], ["Which is an example of non-verbal communication?", "Email", "Telephone call", "Facial expression", "Written report", "LP04"], ["Why is appropriate eye contact useful in workplace communication?", "It shows aggression", "It can show attention and interest", "It replaces all spoken communication", "It means the conversation is finished", "LP04"], ["Which behaviour is appropriate during a professional conversation?", "Looking away constantly", "Using aggressive gestures", "Maintaining suitable eye contact and posture", "Interrupting repeatedly", "LP04"], ["What is good practice when answering a workplace telephone?", "Answer rudely", "Greet the caller and identify the workplace/person appropriately", "Immediately put the caller on hold", "Ask the caller to call someone else", "LP05"], ["Which information is important when taking a telephone message?", "Only the caller's first name", "Caller name, contact number and message", "Only the time", "Only the organization name", "LP05"], ["What should you do if you cannot hear the caller clearly?", "Pretend you heard", "End the call immediately", "Politely ask the caller to repeat the information", "Guess the message", "LP05"], ["What makes a workplace presentation effective?", "Unorganized information", "Clear structure and appropriate delivery", "Reading everything without explanation", "Ignoring the audience", "LP06"], ["What is one purpose of visual aids in a presentation?", "To help the audience understand information", "To make the presentation longer", "To replace the presenter", "To distract the audience", "LP06"], ["How should you respond when an audience member asks a question?", "Ignore the question", "Laugh at the question", "Listen and respond politely and appropriately", "End the presentation immediately", "LP06"], ["Which is an appropriate workplace greeting?", "Hey, you!", "Good morning. How may I help you?", "What do you want?", "Tell me quickly.", "LP07"], ["Why is basic English useful in the workplace?", "It helps understand simple workplace information and instructions", "It is only needed for managers", "It replaces technical skills", "It is only used outside work", "LP07"], ["Which sentence is appropriate workplace English?", "Give me that now.", "You don't know anything.", "Could you please complete this form?", "What are you doing here?", "LP07"], ["What does a warning safety sign generally indicate?", "A possible danger or hazard", "An optional activity", "A customer service area", "A place to rest", "LP08"], ["Why should workplace procedures be followed?", "To make work slower", "To ensure work is carried out safely and correctly", "To avoid responsibility", "To remove teamwork", "LP08"], ["What should you do if you find a damaged electrical cable?", "Continue using it", "Hide it", "Report it according to workplace procedure", "Give it to a customer", "LP08"], ["What does a mandatory safety sign indicate?", "An action that must be followed", "An action that is prohibited", "A possible hazard only", "An optional suggestion", "LP08"], ["What is professionalism?", "Doing only easy tasks", "Behaving responsibly and appropriately at work", "Avoiding customers", "Ignoring rules", "LP09"], ["What does confidentiality mean?", "Sharing all information publicly", "Protecting information from unauthorized disclosure", "Avoiding all communication", "Deleting workplace records", "LP09"], ["Which behaviour demonstrates honesty and integrity?", "Hiding mistakes", "Giving false information", "Providing truthful information and acting ethically", "Blaming others", "LP09"], ["If you do not know a customer's preferred title, what is appropriate?", "Use an insulting nickname", "Use a polite neutral form of address", "Ignore the customer", "Use a first name without consideration", "LP10"], ["What is the first step in Greet–Listen–Clarify–Respond–Close?", "Respond", "Clarify", "Greet", "Close", "LP10"], ["What should you generally do first when a customer makes a complaint?", "Argue with the customer", "Listen calmly and understand the complaint", "Blame a co-worker", "End the conversation", "LP10"], ["Why is clarification important?", "It helps ensure that the information or problem is understood correctly", "It avoids communication", "It makes conversations longer unnecessarily", "It replaces listening", "LP10"], ["What does cultural diversity mean?", "Everyone must have the same culture", "People may have different cultural backgrounds and practices", "Only one culture is acceptable", "Culture is unrelated to communication", "LP11"], ["How should employees respond to religious differences?", "Ignore them completely", "Respect appropriate differences and practices", "Make jokes about them", "Force everyone to follow one practice", "LP11"], ["What does gender equality mean in workplace communication?", "One gender receives all opportunities", "People are treated fairly and respectfully regardless of gender", "Gender should determine job respect", "Only managers deserve respect", "LP11"], ["What is important for effective teamwork?", "Working without communicating", "Cooperation, communication and respect", "Avoiding responsibility", "Competing with every team member", "LP12"], ["What should you do when you disagree with a team member?", "Become aggressive", "Listen and discuss the issue respectfully", "Ignore the person", "Spread the disagreement to others", "LP12"], ["What is constructive feedback?", "Respectful feedback intended to help improve performance", "Personal criticism", "An insult", "A public argument", "LP12"], ["Why are accurate workplace records important?", "They make filing difficult", "They provide reliable information for reference and reporting", "They replace communication", "They are only for customers", "LP13"], ["Which is an example of a workplace record?", "Personal diary", "Time Record Sheet", "Entertainment magazine", "Personal social-media post", "LP13"], ["What should you do if you make an error on a workplace form?", "Hide it", "Correct it according to organizational procedure", "Give it to someone else", "Ignore the error", "LP13"], ["Why should workplace documents be filed properly?", "So they can be found easily when required", "So nobody can read them", "To increase paperwork", "To avoid reporting", "LP13"], ["Why is technical vocabulary important for an ICT technician?", "It helps understand and communicate technical information", "It replaces practical skills", "It is only used in advertisements", "It is unnecessary in ICT", "LP14"], ["What can manufacturer instructions contain?", "Only prices", "Operating, installation, safety and maintenance information", "Only advertisements", "Only customer complaints", "LP14"], ["What should you do when a manufacturer instruction is unclear?", "Guess the meaning", "Ignore the instruction", "Seek clarification or obtain correct information", "Change the instruction", "LP14"], ["What is the main purpose of role-play in workplace communication training?", "To practise realistic workplace situations", "To avoid practical work", "To replace all assessments", "To entertain only", "LP15"], ["What should you do if a customer has provided incomplete information?", "Guess the missing details", "Ask appropriate questions to obtain accurate information", "Ignore the customer", "Record false information", "LP15"], ["If a team member makes a mistake, what is an appropriate response?", "Insult the person", "Hide the mistake", "Discuss it respectfully and help find a solution", "Tell everyone immediately", "LP15"], ["Which approach supports effective workplace information handling?", "Guess, record and share", "Listen, clarify, record accurately and communicate appropriately", "Ignore instructions", "Share confidential information", "LP16"], ["What should a competent ICT technician demonstrate in workplace communication?", "Only technical knowledge", "Clear communication, teamwork, accurate information handling and professional conduct", "Avoiding customers", "Ignoring organizational procedures", "LP16"]];
+const ANSWERS=["B", "B", "C", "C", "C", "C", "B", "B", "C", "C", "B", "C", "B", "B", "C", "B", "A", "C", "B", "A", "C", "A", "B", "C", "A", "B", "B", "C", "B", "C", "B", "A", "B", "B", "B", "B", "B", "A", "B", "B", "B", "B", "A", "B", "C", "A", "B", "C", "B", "C"];
+const TOTAL=QUESTIONS.length;
+const QUESTIONS_PER_PAGE=5;
+const TIME_LIMIT=3600;
+
+let currentPage=0;
+let remaining=TIME_LIMIT;
+let timerId=null;
+let submitted=false;
+let quizStarted=false;
+
+const box=document.getElementById("questions");
+const result=document.getElementById("result");
+const timerEl=document.getElementById("timer");
+const bar=document.getElementById("progressBar");
+
+function fmt(s){
+  return String(Math.floor(s/60)).padStart(2,"0")+":"+String(s%60).padStart(2,"0");
+}
+
+function renderQuestions(){
+  box.innerHTML="";
+  QUESTIONS.forEach((q,i)=>{
+    const d=document.createElement("article");
+    d.className="question";
+    d.dataset.index=i;
+    d.innerHTML=
+      "<h3>"+(i+1)+". "+q[0]+" <span class='lesson'>["+q[5]+"]</span></h3>"+
+      "<label class='option'><input type='radio' name='q"+i+"' value='A'> A. "+q[1]+"</label>"+
+      "<label class='option'><input type='radio' name='q"+i+"' value='B'> B. "+q[2]+"</label>"+
+      "<label class='option'><input type='radio' name='q"+i+"' value='C'> C. "+q[3]+"</label>"+
+      "<label class='option'><input type='radio' name='q"+i+"' value='D'> D. "+q[4]+"</label>";
+    box.appendChild(d);
+  });
+  document.querySelectorAll("input[type=radio]").forEach(x=>x.addEventListener("change",updateProgress));
+}
+
+function showPage(){
+  const pages=Math.ceil(TOTAL/QUESTIONS_PER_PAGE);
+  document.querySelectorAll(".question").forEach((el,i)=>{
+    const page=Math.floor(i/QUESTIONS_PER_PAGE);
+    el.style.display=page===currentPage?"block":"none";
+  });
+
+  const first=currentPage*QUESTIONS_PER_PAGE+1;
+  const last=Math.min((currentPage+1)*QUESTIONS_PER_PAGE,TOTAL);
+  document.getElementById("pageText").innerHTML="<b>Questions "+first+"–"+last+" of "+TOTAL+"</b>";
+  document.getElementById("pageIndicator").textContent=(currentPage+1)+" / "+pages;
+  document.getElementById("prevBtn").disabled=currentPage===0;
+  document.getElementById("nextBtn").style.display=currentPage===pages-1?"none":"inline-block";
+  document.getElementById("submitBtn").style.display=currentPage===pages-1?"inline-block":"none";
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+
+function updateProgress(){
+  let n=0;
+  for(let i=0;i<TOTAL;i++) if(document.querySelector("input[name=q"+i+"]:checked")) n++;
+  bar.style.width=(n/TOTAL*100)+"%";
+}
+
+function startQuiz(){
+  const name=document.getElementById("studentName").value.trim();
+  const id=document.getElementById("studentId").value.trim();
+  if(!name){alert("Please enter Student Name.");document.getElementById("studentName").focus();return;}
+  if(!id){alert("Please enter Student ID.");document.getElementById("studentId").focus();return;}
+
+  quizStarted=true;
+  submitted=false;
+  currentPage=0;
+  remaining=TIME_LIMIT;
+  document.getElementById("detailsScreen").style.display="none";
+  document.getElementById("quizScreen").style.display="block";
+  result.style.display="none";
+  timerEl.textContent=fmt(remaining);
+  showPage();
+  clearInterval(timerId);
+  timerId=setInterval(()=>{
+    remaining--;
+    timerEl.textContent=fmt(Math.max(0,remaining));
+    if(remaining<=0){clearInterval(timerId);submitQuiz(true);}
+  },1000);
+}
+
+function submitQuiz(auto=false){
+  if(submitted)return;
+  submitted=true;
+  clearInterval(timerId);
+
+  const name=document.getElementById("studentName").value.trim();
+  const id=document.getElementById("studentId").value.trim();
+  const date=document.getElementById("examDate").value;
+  const time=document.getElementById("examTime").value;
+
+  let score=0,answered=0;
+  const reviewPages=[];
+
+  for(let start=0;start<TOTAL;start+=QUESTIONS_PER_PAGE){
+    const end=Math.min(start+QUESTIONS_PER_PAGE,TOTAL);
+    let items="";
+    for(let i=start;i<end;i++){
+      const q=QUESTIONS[i];
+      const selected=document.querySelector("input[name=q"+i+"]:checked");
+      const chosen=selected?selected.value:"Not answered";
+      const ok=chosen===ANSWERS[i];
+      if(selected)answered++;
+      if(ok)score++;
+      items+="<div class='review-item'><b>"+(i+1)+". ["+q[5]+"]</b> "+q[0]+
+        "<br>Your answer: "+chosen+" | Correct answer: "+ANSWERS[i]+
+        " — <span class='"+(ok?"correct":"incorrect")+"'>"+(ok?"Correct":"Incorrect")+"</span></div>";
+    }
+    reviewPages.push("<div class='review-page'><h4>Questions "+(start+1)+"–"+end+"</h4>"+items+"</div>");
+  }
+
+  const pct=score/TOTAL*100;
+  const status=pct>=50?"PASS":"NOT YET PASSED";
+
+  result.innerHTML=
+    "<h2>Assessment Result</h2>"+
+    "<p><b>Student Name:</b> "+(name||"Not entered")+"</p>"+
+    "<p><b>Student No:</b> "+(id||"Not entered")+"</p>"+
+    "<p><b>Date:</b> "+(date||"Not entered")+"</p>"+
+    "<p><b>Time:</b> "+(time||"Not entered")+"</p>"+
+    "<p><b>Score:</b> "+score+" / "+TOTAL+"</p>"+
+    "<p><b>Percentage:</b> "+pct.toFixed(1)+"%</p>"+
+    "<p><b>Answered:</b> "+answered+" / "+TOTAL+"</p>"+
+    "<p><b>Status:</b> "+status+"</p>"+
+    "<hr><h3>Answer Review</h3>"+
+    reviewPages.join("");
+
+  document.getElementById("quizScreen").style.display="none";
+  result.style.display="block";
+  result.scrollIntoView({behavior:"smooth"});
+}
+
+document.getElementById("startQuizBtn").addEventListener("click",startQuiz);
+document.getElementById("prevBtn").addEventListener("click",()=>{
+  if(currentPage>0){currentPage--;showPage();}
+});
+document.getElementById("nextBtn").addEventListener("click",()=>{
+  const pages=Math.ceil(TOTAL/QUESTIONS_PER_PAGE);
+  if(currentPage<pages-1){currentPage++;showPage();}
+});
+document.getElementById("submitBtn").addEventListener("click",()=>submitQuiz(false));
+
+document.getElementById("examDate").valueAsDate=new Date();
+document.getElementById("examTime").value=new Date().toTimeString().slice(0,5);
+
+renderQuestions();
+</script>
+</body>
+</html>
