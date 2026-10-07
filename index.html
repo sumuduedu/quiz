@@ -1,6 +1,4 @@
-from pathlib import Path
-
-html = r'''<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -278,13 +276,4 @@ document.getElementById("examTime").value=new Date().toTimeString().slice(0,5);
 renderQuestions();
 </script>
 </body>
-</html>'''
-
-path = Path("/mnt/data/K72S004BM02_Workshop_Calculation_Science_MCQ.html")
-path.write_text(html, encoding="utf-8")
-
-print(f"Created: {path}")
-print(f"Questions: 50")
-print("Time: 60 minutes")
-print("Pass mark: 50%")
-print("Format: 5 questions per page with timer, progress, scoring and answer review")
+</html>
